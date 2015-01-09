@@ -1,0 +1,12 @@
+node_modules
+/.DS_Store
+/.idea/
+/js/app.js
+/spec/
+*~
+
+/.grunt/
+/_SpecRunner.html
+/microservice-monitor.iml
+/src/.DS_Store
+/src/main/.DS_Store
