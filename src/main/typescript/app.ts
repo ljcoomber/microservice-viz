@@ -1,7 +1,16 @@
+///<reference path="layout.ts" />
+///<reference path="service.ts" />
 "use strict";
 
-function boot(): string {
-    var txt  = "Hello World v7";
-    document.getElementById('content').appendChild(document.createTextNode(txt));
-    return txt;
+function boot(manifest: Url = new Url('src/test/resources//manifest.json')): Layout.MutableLayout {
+    var cose = Layout.cose(() => {
+        console.log("Layout initialised")
+        new Service.Checker(manifest, cose);
+    });
+
+    return cose;
+}
+
+class Url {
+    constructor(public value: string) {}
 }
