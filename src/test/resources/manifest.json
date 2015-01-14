@@ -1,19 +1,24 @@
 {
   "services":[
     {
-      "name": "a"
+      "name": "a",
+      "url": "http://127.0.0.1:8080/src/test/resources/a"
     },
     {
-      "name": "b"
+      "name": "b",
+      "url": "http://127.0.0.1:8080/src/test/resources/b"
     },
     {
-      "name": "c"
+      "name": "c",
+      "url": "http://127.0.0.1:8080/src/test/resources/c"
     },
     {
-      "name": "d"
+      "name": "d",
+      "url": "http://127.0.0.1:8080/src/test/resources/d"
     },
     {
-      "name": "e"
+      "name": "e",
+      "url": "http://127.0.0.1:8080/src/test/resources/e"
     }
   ]
 }

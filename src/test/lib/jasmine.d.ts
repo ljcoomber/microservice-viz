@@ -3,6 +3,9 @@
 // Definitions by: Boris Yankov <https://github.com/borisyankov/>, Theodore Brown <https://github.com/theodorejb>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
+// Added by lee.coomebr@itv.com for Jasmine 2.1
+declare function beforeAll(action: () => void): void;
+declare function beforeAll(action: (done: () => void) => void): void;
 
 // For ddescribe / iit use : hhttps://github.com/borisyankov/DefinitelyTyped/blob/master/karma-jasmine/karma-jasmine.d.ts
 

@@ -18,7 +18,7 @@ module.exports = function (grunt) {
                         return [
                             function(req, res, next) {
                                 res.setHeader('Access-Control-Allow-Origin', '*');
-                                res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+                                res.setHeader('Access-Control-Allow-Methods', 'GET');
                                 res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
                                 // don't just call next() return it
@@ -62,14 +62,12 @@ module.exports = function (grunt) {
             test: {
                 src: 'js/*.js',
                 options: {
-                    specs: 'spec/*.js',
-                    helpers: 'spec/*Helper.js',
-                    vendor: ['src/test/lib/jquery-2.1.1.min.js']
+                    specs: 'spec/*.js'
                 }
             }
         }
     });
 
-    grunt.registerTask('test', ['typescript', 'jasmine']);
+    grunt.registerTask('test', ['typescript', 'connect', 'jasmine']);
     grunt.registerTask('default', ['typescript', 'connect', 'open', 'watch']);
 }

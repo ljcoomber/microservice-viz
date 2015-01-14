@@ -1,7 +1,7 @@
 node_modules
 /.DS_Store
 /.idea/
-/js/app.js
+/js/
 /spec/
 *~
 
