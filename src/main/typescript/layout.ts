@@ -26,6 +26,19 @@ module Layout {
             }
         },
         {
+            selector: '$node > node',
+            css: {
+                'padding-top': '10px',
+                'padding-left': '10px',
+                'padding-bottom': '10px',
+                'padding-right': '10px',
+                'text-valign': 'top',
+                'text-halign': 'center',
+                'border-color': 'gray',
+                'background-color': 'lightgray'
+            }
+        },
+        {
             selector: 'edge',
             css: {
                 'target-arrow-shape': 'triangle',
@@ -37,7 +50,7 @@ module Layout {
     export interface MutableLayout {
         cy;
         layoutStopped: boolean;
-        addService(id:string, redraw?: boolean): void;
+        addService(id:string, network?:string, redraw?: boolean): void;
         changeServiceStatus(id:string, status:Status): void;
         addConnection(id:string, source:string, target:string): void;
         changeConnectionStatus(id:string, status:Status): void;
@@ -52,7 +65,11 @@ module Layout {
 
         function layout() {
             return {
-                name: 'cose'
+                name: 'cose',
+                numIter: 10000,
+                nodeOverlap: 20,
+                edgeElasticity: 10000,
+                gravity: 500
             }
         }
 
@@ -87,14 +104,20 @@ module Layout {
                 return exists
             }
 
-            addService(id:string, redraw:boolean = true):void {
+            addNetwork(id:string):void {
+                this.addIfNotExists(id, {group: 'nodes', data: {id: id}}, false);
+            }
+
+            addService(id:string, network:string = 'external', redraw:boolean = true):void {
                 var exists = this.cy.$('#' + id).length > 0;
                 if (!exists) {
+                    this.addNetwork(network);
+
                     var width = id.length * 9   // Very crude width calculation
                     this.cy.add({
                         group: "nodes",
                         css: {width: width},
-                        data: {id: id},
+                        data: {id: id, parent: network},
                         position: {x: 100, y: 100}
                     });
 
@@ -177,48 +200,6 @@ module Layout {
 //        changeServiceStatus(id:string, status:Status): void;
 //        changeConnectionStatus(id:string, status:Status): void;
 //    }
-//
-//    export function cose(readyThunk: () => void): MutableLayout {
-//        return new Cose.CoseLayout(readyThunk);
-//    }
-//
-//    var STYLE = [
-//        {
-//            selector: 'node',
-//            css: {
-//                'content': 'data(id)',
-//                'text-valign': 'center',
-//                'text-halign': 'center',
-//                'font-family': 'Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif',
-//                'font-size': '8px',
-//                'border-width': 2,
-//                'border-color': 'gray',
-//                'background-color': 'white',
-//                'shape': 'roundrectangle'
-//            }
-//        },
-//        {
-//            selector: '$node > node',
-//            css: {
-//                'padding-top': '10px',
-//                'padding-left': '10px',
-//                'padding-bottom': '10px',
-//                'padding-right': '10px',
-//                'text-valign': 'top',
-//                'text-halign': 'center',
-//                'border-color': 'gray',
-//                'background-color': 'lightgray'
-//            }
-//        },
-//        {
-//            selector: 'edge',
-//            css: {
-//                'target-arrow-shape': 'triangle',
-//                'line-color': 'green',
-//                'target-arrow-color': 'green',
-//                'source-arrow-color': 'green'
-//            }
-//        }];
 //
 //
 //    module Cose {

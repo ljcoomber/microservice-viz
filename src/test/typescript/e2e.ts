@@ -69,6 +69,22 @@ describe("Microservice Viz End to End test", () => {
             expect(e.css().lineColor).toBe('red')
         })
     });
+
+    it("should place services in the manifest in their defined networks", () => {
+        booted.cy.nodes('#a,#b').forEach(n => {
+            expect(n.data('parent')).toBe('n1');
+        })
+
+        booted.cy.nodes('#c,#d,#e').forEach(n => {
+            expect(n.data('parent')).toBe('n2');
+        })
+    });
+
+    it("should place services without a defined network in an external network", () => {
+        booted.cy.nodes('#f,#a1,#c1,#c2').forEach( n => {
+            expect(n.data('parent')).toBe('external');
+        })
+    });
 })
 
 function waitUntil(testFunc: () => boolean, failureThunk: () => void, successCallback = () => {},

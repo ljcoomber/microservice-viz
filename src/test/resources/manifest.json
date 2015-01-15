@@ -2,23 +2,28 @@
   "services":[
     {
       "name": "a",
-      "url": "http://127.0.0.1:8080/src/test/resources/a"
+      "url": "http://127.0.0.1:8080/src/test/resources/a",
+      "network": "n1"
     },
     {
       "name": "b",
-      "url": "http://127.0.0.1:8080/src/test/resources/b"
+      "url": "http://127.0.0.1:8080/src/test/resources/b",
+      "network": "n1"
     },
     {
       "name": "c",
-      "url": "http://127.0.0.1:8080/src/test/resources/c?error=true"
+      "url": "http://127.0.0.1:8080/src/test/resources/c?error=true",
+      "network": "n2"
     },
     {
       "name": "d",
-      "url": "http://127.0.0.1:8080/src/test/resources/d"
+      "url": "http://127.0.0.1:8080/src/test/resources/d",
+      "network": "n2"
     },
     {
       "name": "e",
-      "url": "http://this.does.not.exist.com/"
+      "url": "http://this.does.not.exist.com/",
+      "network": "n2"
     },
     {
       "name": "f",
