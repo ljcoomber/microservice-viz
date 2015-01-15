@@ -12,6 +12,7 @@ declare module Cy {
         style: Stylesheet
         layout: Layout
         ready: ReadyFunc
+        $: any
     }
 
     interface Stylesheet {

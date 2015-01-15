@@ -21,7 +21,6 @@ module.exports = function (grunt) {
                     port: 8080,
                     base: './',
                     hostname: 'localhost',
-                    // remove next from params
                     middleware: function(connect, options) {
                         return [
                             function(req, res, next) {
@@ -29,7 +28,10 @@ module.exports = function (grunt) {
                                 res.setHeader('Access-Control-Allow-Methods', 'GET');
                                 res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-                                // don't just call next() return it
+                                if(req.url.indexOf('error=true') > -1) {
+                                    res.statusCode = 503;
+                                }
+
                                 return next();
                             },
 

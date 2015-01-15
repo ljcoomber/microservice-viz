@@ -8,6 +8,10 @@ describe("Microservice Viz End to End test", () => {
     var booted;
 
     beforeAll((done) => {
+        $.ajaxSetup({
+            'timeout': 100
+        });
+
         $(document.body).append($('<div id="cy" />'));
         booted = boot(new Url('src/test/resources/manifest.json'));
 
@@ -18,14 +22,52 @@ describe("Microservice Viz End to End test", () => {
             () => { done() })
     });
 
-    it("should draw the correct number of nodes", () => {
-        expect(booted.cy.nodes().length).toBe(5)
+    it("should display services loaded from the manifest", () => {
+        expect(booted.cy.nodes('#a,#b,#c,#d,#e,#f').length).toBe(6)
     });
 
-    it("should correctly colour good and bad nodes", () => {
-        var colours = _.groupBy(booted.cy.nodes(), (n: any) => n.css('background-color'))
-        expect(colours['red'].length).toBe(2);
-        expect(colours['green'].length).toBe(3);
+    it("should indicate healthy services", () => {
+        booted.cy.nodes('#a,#b').forEach( n => {
+            expect(n.css().backgroundColor).toBe('green')
+            expect(n.css().borderColor).toBe('green')
+        })
+    });
+
+    it("should indicate services which respond but are unhealthy", () => {
+        booted.cy.nodes('#c,#d').forEach( n => {
+            expect(n.css().backgroundColor).toBe('red')
+            expect(n.css().borderColor).toBe('green')
+        })
+    });
+
+    it("should indicate services which cannot be reached", () => {
+        booted.cy.nodes('#e,#f').forEach( n => {
+            expect(n.css().backgroundColor).toBe('red')
+            expect(n.css().borderColor).toBe('red')
+        })
+    });
+
+    it("should display services loaded from other service responses", () => {
+        expect(booted.cy.nodes('#a1,#c1,#c2').length).toBe(3)
+    })
+
+    it("should indicate services loaded from other service responses are not checked", () => {
+        booted.cy.nodes('#a1,#c1,#c2').forEach( n => {
+            expect(n.css().backgroundColor).toBe('white')
+            expect(n.css().borderColor).toBe('gray')
+        })
+    });
+
+    it("should indicate transitive dependencies that are healthy", () => {
+        booted.cy.edges('#a-b,#a-c,#a-a1,#c-c1').forEach( e => {
+            expect(e.css().lineColor).toBe('green')
+        })
+    });
+
+    it("should indicate transitive dependencies that are unhealthy", () => {
+        booted.cy.edges('#c-c2').forEach( e => {
+            expect(e.css().lineColor).toBe('red')
+        })
     });
 })
 

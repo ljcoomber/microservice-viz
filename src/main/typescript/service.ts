@@ -8,22 +8,35 @@ module Service {
         url: string;
     }
 
+    function statusFromString(status:string) {
+        switch (status) {
+            case "Ok":
+                return Layout.Status.Ok;
+                break;
+            case "Err":
+                return Layout.Status.Err;
+                break
+            default:
+                console.error("Cannot parse status: " + status);
+                return Layout.Status.Unknown;
+        }
+    }
+
     export class Checker {
 
         constructor(manifest:Url, public layout:Layout.MutableLayout) {
+            function parseJson(j): any {
+                try {
+                    return jQuery.parseJSON(j)
+                } catch(error) {
+                    console.error("Could not parse content: " + j)
+                    throw error;
+                }
+            }
+
             console.log("Loading services from " + manifest.value)
-            jQuery.get(manifest.value)
+            jQuery.ajax(manifest.value, { cache: false })
                 .done((data, textStatus, jqXHR) => {
-
-                    function parseJson(j): any {
-                        try {
-                            return jQuery.parseJSON(j)
-                        } catch(error) {
-                            console.error("Could not parse manifest: " + j)
-                            throw error;
-                        }
-                    }
-
                     parseJson(jqXHR.responseText).services.forEach((s: Service) => {
                         layout.addService(s.name, false)
                         this.checkService(s.name, s.url);
@@ -36,21 +49,52 @@ module Service {
                 })
         }
 
+        handleStatusResponse(service, data) {
+            function parseJson(j): any {
+                try {
+                    return jQuery.parseJSON(j)
+                } catch(error) {
+                    console.info("Could not parse service response: " + j)
+                }
+            }
+
+            if(data) {
+                var dataObj = parseJson(data);
+                if(dataObj) {
+                    Object.keys(dataObj).forEach((dependency) => {
+                        var id = service + '-' + dependency;
+
+                        this.layout.addService(dependency);
+                        this.layout.addConnection(id, service, dependency);
+
+                        var status = statusFromString(dataObj[dependency].status);
+                        this.layout.changeConnectionStatus(id, status);
+                    });
+                }
+            }
+        }
+
         checkService(name:string, url:string) {
             console.log("Checking service " + name + " at " + url);
 
             this.layout.changeServiceStatus(name, Layout.Status.Checking);
 
-            jQuery.ajax(url, { cache: false})
+            jQuery.ajax(url, { cache: false })
                 .done((data, textStatus, jqXHR) => {
                     this.layout.changeServiceStatus(name, Layout.Status.Ok);
+                    this.handleStatusResponse(name, jqXHR.responseText)
                 })
                 .fail((jqXHR, textStatus, errorThrown) => {
-                    console.log("Service check for " + name + " failed: " + errorThrown);
-                    this.layout.changeServiceStatus(name, Layout.Status.Err);
+                    if(jqXHR.status > 0) {
+                        this.layout.changeServiceStatus(name, Layout.Status.Err);
+                        this.handleStatusResponse(name, jqXHR.responseText)
+                    } else {
+                        this.layout.changeServiceStatus(name, Layout.Status.CannotConnect);
+                    }
                 })
 
-            setTimeout(() => { this.checkService(name, url)}, 5000);
+            // TODO: Enable when out of dev
+            //setTimeout(() => { this.checkService(name, url)}, 5000);
         }
     }
 }

@@ -10,7 +10,7 @@
     },
     {
       "name": "c",
-      "url": "http://127.0.0.1:8080/src/test/resources/c"
+      "url": "http://127.0.0.1:8080/src/test/resources/c?error=true"
     },
     {
       "name": "d",
@@ -18,7 +18,11 @@
     },
     {
       "name": "e",
-      "url": "http://127.0.0.1:8080/src/test/resources/e"
+      "url": "http://this.does.not.exist.com/"
+    },
+    {
+      "name": "f",
+      "url": "http://127.0.0.1:12345/"
     }
   ]
 }
