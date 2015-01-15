@@ -4,9 +4,17 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-open');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
  
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        clean: ["js/", "spec/"],
+        copy: {
+            main: {
+                files: [ { expand: true, src: ['src/main/lib/*js'], dest: 'js/', filter: 'isFile', flatten: true }]
+            }
+        },
         connect: {
             server: {
                 options: {
@@ -68,6 +76,6 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('test', ['typescript', 'connect', 'jasmine']);
-    grunt.registerTask('default', ['typescript', 'connect', 'open', 'watch']);
+    grunt.registerTask('test', ['typescript', 'copy', 'connect', 'jasmine']);
+    grunt.registerTask('default', ['typescript', 'copy', 'connect', 'open', 'watch']);
 }
