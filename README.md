@@ -31,7 +31,7 @@ you can specify
 The application will then periodically check each of these URLs, and render them as:
  - all red; failed to connect to the host or parse the HTTP response
  - red with a green border; received a HTTP response, but was non-2xx
- - all greed; received a 2xx response
+ - all green; received a 2xx response
 
 The app is only really useful if additional information about dependent service statuses is included in the response. For example,
 if service 'a' returns:
