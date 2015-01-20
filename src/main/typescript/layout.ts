@@ -95,7 +95,7 @@ module Layout {
             }
 
             addIfNotExists(id:string, data, render:boolean): boolean {
-                var exists = this.cy.$("#" + id).length > 0;
+                var exists = this.cy.$(`#${id}`).length > 0;
                 if(!exists) {
                     this.cy.add(data)
                     if(render) this.cy.elements().layout(layout());
@@ -109,7 +109,7 @@ module Layout {
             }
 
             addService(id:string, network:string = "external", redraw:boolean = true):void {
-                var exists = this.cy.$("#" + id).length > 0;
+                var exists = this.cy.$(`#${id}`).length > 0;
                 if (!exists) {
                     this.addNetwork(network);
 
@@ -148,13 +148,13 @@ module Layout {
                             return {"border-color": "red", "background-color": "red"};
                             break
                         default:
-                            console.error("Cannot parse status: " + status);
+                            console.error(`Cannot parse status: ${status}`);
                             return {"border-color": "white", "background-color": "white"};
                     }
                 }
 
                 var css = switchShouldBeAnExpression();
-                this.cy.$("#" + id).css(css);
+                this.cy.$(`#${id}`).css(css);
             }
 
             changeConnectionStatus(id:string, status:Status):void {
@@ -173,13 +173,13 @@ module Layout {
                             return { "line-color": "red", "target-arrow-color": "red", "source-arrow-color": "red" };
                             break
                         default:
-                            console.error("Cannot parse status: " + status);
+                            console.error(`Cannot parse status: ${status}`);
                             return { "line-color": "lightgray", "target-arrow-color": "lightgray", "source-arrow-color": "lightgray" };
                     }
                 }
 
                 var css = determineCss();
-                this.cy.$("#" + id).css(css);
+                this.cy.$(`#${id}`).css(css);
             }
 
             redraw() {

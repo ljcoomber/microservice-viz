@@ -18,7 +18,7 @@ module Service {
                 return Layout.Status.Err;
                 break
             default:
-                console.error("Cannot parse status: " + status);
+                console.error(`Cannot parse status: ${status}`);
                 return Layout.Status.Unknown;
         }
     }
@@ -30,12 +30,12 @@ module Service {
                 try {
                     return jQuery.parseJSON(j)
                 } catch(error) {
-                    console.error("Could not parse content: " + j)
+                    console.error(`Could not parse content: ${j}`)
                     throw error;
                 }
             }
 
-            console.log("Loading services from " + manifest)
+            console.log(`Loading services from ${manifest}`)
             jQuery.ajax(manifest, { cache: false })
                 .done((data, textStatus, jqXHR) => {
                     parseJson(jqXHR.responseText).services.forEach((s: Service) => {
@@ -46,7 +46,7 @@ module Service {
                     layout.redraw();
                 })
                 .fail((jqXHR, textStatus, errorThrown) => {
-                    console.log("Failed to load service list from " + manifest + " due to " + textStatus);
+                    console.log(`Failed to load service list from ${manifest} due to ${textStatus}`);
                 })
         }
 
@@ -55,7 +55,7 @@ module Service {
                 try {
                     return jQuery.parseJSON(j)
                 } catch(error) {
-                    console.info("Could not parse service response: " + j)
+                    console.info(`Could not parse service response: ${j}`)
                 }
             }
 
@@ -63,7 +63,7 @@ module Service {
                 var dataObj = parseJson(data);
                 if(dataObj) {
                     Object.keys(dataObj).forEach((dependency) => {
-                        var id = service + "-" + dependency;
+                        var id = `${service}-${dependency}`;
 
                         this.layout.addService(dependency);
                         this.layout.addConnection(id, service, dependency);
@@ -76,7 +76,7 @@ module Service {
         }
 
         checkService(name:string, url:string) {
-            console.log("Checking service " + name + " at " + url);
+            console.log(`Checking service ${name} at ${url}`);
 
             this.layout.changeServiceStatus(name, Layout.Status.Checking);
 
