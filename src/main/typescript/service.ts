@@ -63,7 +63,7 @@ module Service {
                 var dataObj = parseJson(data);
                 if(dataObj) {
                     Object.keys(dataObj).forEach((dependency) => {
-                        var id = service + '-' + dependency;
+                        var id = service + "-" + dependency;
 
                         this.layout.addService(dependency);
                         this.layout.addConnection(id, service, dependency);

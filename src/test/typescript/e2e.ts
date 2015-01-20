@@ -9,11 +9,11 @@ describe("Microservice Viz End to End test", () => {
 
     beforeAll((done) => {
         $.ajaxSetup({
-            'timeout': 100
+            "timeout": 100
         });
 
         $(document.body).append($('<div id="cy" />'));
-        booted = boot('src/test/resources/manifest.json');
+        booted = boot("src/test/resources/manifest.json");
 
         waitUntil(() => { return booted.layoutStopped; },
             () => {
@@ -23,66 +23,66 @@ describe("Microservice Viz End to End test", () => {
     });
 
     it("should display services loaded from the manifest", () => {
-        expect(booted.cy.nodes('#a,#b,#c,#d,#e,#f').length).toBe(6)
+        expect(booted.cy.nodes("#a,#b,#c,#d,#e,#f").length).toBe(6)
     });
 
     it("should indicate healthy services", () => {
-        booted.cy.nodes('#a,#b').forEach( n => {
-            expect(n.css().backgroundColor).toBe('green')
-            expect(n.css().borderColor).toBe('green')
+        booted.cy.nodes("#a,#b").forEach( n => {
+            expect(n.css().backgroundColor).toBe("green")
+            expect(n.css().borderColor).toBe("green")
         })
     });
 
     it("should indicate services which respond but are unhealthy", () => {
-        booted.cy.nodes('#c,#d').forEach( n => {
-            expect(n.css().backgroundColor).toBe('red')
-            expect(n.css().borderColor).toBe('green')
+        booted.cy.nodes("#c,#d").forEach( n => {
+            expect(n.css().backgroundColor).toBe("red")
+            expect(n.css().borderColor).toBe("green")
         })
     });
 
     it("should indicate services which cannot be reached", () => {
-        booted.cy.nodes('#e,#f').forEach( n => {
-            expect(n.css().backgroundColor).toBe('red')
-            expect(n.css().borderColor).toBe('red')
+        booted.cy.nodes("#e,#f").forEach( n => {
+            expect(n.css().backgroundColor).toBe("red")
+            expect(n.css().borderColor).toBe("red")
         })
     });
 
     it("should display services loaded from other service responses", () => {
-        expect(booted.cy.nodes('#a1,#c1,#c2').length).toBe(3)
+        expect(booted.cy.nodes("#a1,#c1,#c2").length).toBe(3)
     })
 
     it("should indicate services loaded from other service responses are not checked", () => {
-        booted.cy.nodes('#a1,#c1,#c2').forEach( n => {
-            expect(n.css().backgroundColor).toBe('white')
-            expect(n.css().borderColor).toBe('gray')
+        booted.cy.nodes("#a1,#c1,#c2").forEach( n => {
+            expect(n.css().backgroundColor).toBe("white")
+            expect(n.css().borderColor).toBe("gray")
         })
     });
 
     it("should indicate transitive dependencies that are healthy", () => {
-        booted.cy.edges('#a-b,#a-c,#a-a1,#c-c1').forEach( e => {
-            expect(e.css().lineColor).toBe('green')
+        booted.cy.edges("#a-b,#a-c,#a-a1,#c-c1").forEach( e => {
+            expect(e.css().lineColor).toBe("green")
         })
     });
 
     it("should indicate transitive dependencies that are unhealthy", () => {
-        booted.cy.edges('#c-c2').forEach( e => {
-            expect(e.css().lineColor).toBe('red')
+        booted.cy.edges("#c-c2").forEach( e => {
+            expect(e.css().lineColor).toBe("red")
         })
     });
 
     it("should place services in the manifest in their defined networks", () => {
-        booted.cy.nodes('#a,#b').forEach(n => {
-            expect(n.data('parent')).toBe('n1');
+        booted.cy.nodes("#a,#b").forEach(n => {
+            expect(n.data("parent")).toBe("n1");
         })
 
-        booted.cy.nodes('#c,#d,#e').forEach(n => {
-            expect(n.data('parent')).toBe('n2');
+        booted.cy.nodes("#c,#d,#e").forEach(n => {
+            expect(n.data("parent")).toBe("n2");
         })
     });
 
     it("should place services without a defined network in an external network", () => {
-        booted.cy.nodes('#f,#a1,#c1,#c2').forEach( n => {
-            expect(n.data('parent')).toBe('external');
+        booted.cy.nodes("#f,#a1,#c1,#c2").forEach( n => {
+            expect(n.data("parent")).toBe("external");
         })
     });
 })
