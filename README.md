@@ -85,6 +85,7 @@ $ npm install
 ```
 
 # Known Issues
+ - the example was built up from testing rather than being useful as an example
  - most real services have multiple instances for resiliency. I've spiked out visualisation of this using another layer
    of nesting, but still need to bring into this codebase.
  - early experiments used [D3](http://d3js.org/) which has a model that easily supports dynamic graphs (but didn't have strong
