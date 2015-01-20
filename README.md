@@ -60,14 +60,14 @@ Here is an example screenshot:
 
 # Status
 
-Massively experimental.
+Massively experimental work in progress.
 
 # Development Notes
 
-I am not a Typescript or even a JavaScript programmer, so I expect there to be many deficiencies in the code and use of tooling.
+I am not a Typescript or even a JavaScript programmer, so expect there to be many deficiencies in the code and use of tooling!
 
 It wasn't clear how to usefully unit test interactions with web services or a rendering library, and so there are just a small
-collection of end-to-end tests using the demo data, and checking high level properties of rendered graph such as number of nodes
+collection of end-to-end tests using the demo data, and checking high level properties of the rendered graph such as number of nodes
 and their colours.
 
 To run the tests:
@@ -84,4 +84,13 @@ $ npm-check-updates -u
 $ npm install 
 ```
 
+# Known Issues
+ - most real services have multiple instances for resiliency. I've spiked out visualisation of this using another layer
+   of nesting, but still need to bring into this codebase.
+ - early experiments used [D3](http://d3js.org/) which has a model that easily supports dynamic graphs (but didn't have strong
+   support for compound graphs). Whilst Cytoscape theoretically allows the graph to be modified, I haven't yet found an
+   efficient way of only rendering the necessary parts of it.
 
+# Ideas
+ - add more info to nodes, maybe using [QTips](https://github.com/cytoscape/cytoscape.js-qtip)
+ - use audio to indicate status, e.g., low hum for ok services, higher pitch tone when things go wrong
