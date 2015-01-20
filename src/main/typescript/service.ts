@@ -14,7 +14,7 @@ module Service {
             case "Ok":
                 return Layout.Status.Ok;
                 break;
-            case "Err":
+            case "NotOk":
                 return Layout.Status.Err;
                 break
             default:

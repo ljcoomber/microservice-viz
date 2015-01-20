@@ -3,6 +3,6 @@
     "status": "Ok"
   },
   "c2": {
-    "status": "Err"
+    "status": "NotOk"
   }
 }
