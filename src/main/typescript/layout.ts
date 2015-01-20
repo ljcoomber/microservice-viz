@@ -130,7 +130,7 @@ module Layout {
             }
 
             changeServiceStatus(id:string, status:Status):void {
-                function switchShouldBeAnExpression() {
+                function determineCss() {
                     switch (status) {
                         case Layout.Status.Unknown:
                             return {"border-color": "white", "background-color": "white"};
@@ -153,7 +153,7 @@ module Layout {
                     }
                 }
 
-                var css = switchShouldBeAnExpression();
+                var css = determineCss();
                 this.cy.$(`#${id}`).css(css);
             }
 
