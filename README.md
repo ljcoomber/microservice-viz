@@ -54,6 +54,10 @@ this indicates that it depends on service 'a1', 'b' and 'c', and so edges will b
 status, in this case, all green for 'Ok'. Note that these services do not need to be declared in the manifest; discovered services will
 be dynamically added to the visualisation (currently always in the 'external' network).
 
+Here is an example screenshot:
+
+![Image](../blob/master/example.png?raw=true)
+
 # Status
 
 Massively experimental.
