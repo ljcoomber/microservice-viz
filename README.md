@@ -36,7 +36,7 @@ The application will then periodically check each of these URLs, and render them
 The app is only really useful if additional information about dependent service statuses is included in the response. For example,
 if service 'a' returns:
 
-'''
+```
 {
   "a1": {
     "status": "Ok"
@@ -48,7 +48,7 @@ if service 'a' returns:
     "status": "Ok"
   }
 }
-'''
+```
 
 this indicates that it depends on service 'a1', 'b' and 'c', and so edges will be drawn on the graph to reflect the returned
 status, in this case, all green for 'Ok'. Note that these services do not need to be declared in the manifest; discovered services will
@@ -72,9 +72,9 @@ and their colours.
 
 To run the tests:
 
-'''
+```
 grunt test
-'''
+```
 
 To update build dependencies (but not yet libraries):
 
