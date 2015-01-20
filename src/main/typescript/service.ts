@@ -35,8 +35,8 @@ module Service {
                 }
             }
 
-            console.log("Loading services from " + manifest.value)
-            jQuery.ajax(manifest.value, { cache: false })
+            console.log("Loading services from " + manifest)
+            jQuery.ajax(manifest, { cache: false })
                 .done((data, textStatus, jqXHR) => {
                     parseJson(jqXHR.responseText).services.forEach((s: Service) => {
                         layout.addService(s.name, s.network, false);
@@ -46,7 +46,7 @@ module Service {
                     layout.redraw();
                 })
                 .fail((jqXHR, textStatus, errorThrown) => {
-                    console.log("Failed to load service list from " + manifest.value + " due to " + textStatus);
+                    console.log("Failed to load service list from " + manifest + " due to " + textStatus);
                 })
         }
 

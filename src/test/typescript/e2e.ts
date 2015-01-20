@@ -13,7 +13,7 @@ describe("Microservice Viz End to End test", () => {
         });
 
         $(document.body).append($('<div id="cy" />'));
-        booted = boot(new Url('src/test/resources/manifest.json'));
+        booted = boot('src/test/resources/manifest.json');
 
         waitUntil(() => { return booted.layoutStopped; },
             () => {
