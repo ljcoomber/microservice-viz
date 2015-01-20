@@ -56,7 +56,7 @@ be dynamically added to the visualisation (currently always in the 'external' ne
 
 Here is an example screenshot:
 
-![Image](../blob/master/example.png?raw=true)
+![Image](example.png)
 
 # Status
 
