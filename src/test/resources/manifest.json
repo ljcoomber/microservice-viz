@@ -1,33 +1,29 @@
 {
   "services":[
     {
-      "name": "a",
+      "name": "service-a",
       "url": "http://127.0.0.1:8080/src/test/resources/a",
-      "network": "n1"
+      "network": "vlan-1"
     },
     {
-      "name": "b",
+      "name": "service-b",
       "url": "http://127.0.0.1:8080/src/test/resources/b",
-      "network": "n1"
+      "network": "vlan-1"
     },
     {
-      "name": "c",
+      "name": "service-c",
       "url": "http://127.0.0.1:8080/src/test/resources/c?error=true",
-      "network": "n2"
+      "network": "vlan-2"
     },
     {
-      "name": "d",
-      "url": "http://127.0.0.1:8080/src/test/resources/d",
-      "network": "n2"
+      "name": "service-d",
+      "url": "http://127.0.0.1:8080/src/test/resources/DOES_NOT_EXIST",
+      "network": "vlan-2"
     },
     {
-      "name": "e",
+      "name": "service-e",
       "url": "http://this.does.not.exist.com/",
-      "network": "n2"
-    },
-    {
-      "name": "f",
-      "url": "http://127.0.0.1:12345/"
+      "network": "vlan-2"
     }
   ]
 }

@@ -1,11 +1,11 @@
 {
-  "a1": {
+  "service-b": {
     "status": "Ok"
   },
-  "b": {
+  "service-c": {
     "status": "Ok"
   },
-  "c": {
+  "service-f": {
     "status": "Ok"
   }
 }

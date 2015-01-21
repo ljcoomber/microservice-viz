@@ -34,29 +34,37 @@ The application will then periodically check each of these URLs, and render them
  - all green; received a 2xx response
 
 The app is only really useful if additional information about dependent service statuses is included in the response. For example,
-if service 'a' returns:
+if 'service-a' returns:
 
 ```
 {
-  "a1": {
+  "service-b": {
     "status": "Ok"
   },
-  "b": {
+  "service-c": {
     "status": "Ok"
   },
-  "c": {
+  "service-f": {
     "status": "Ok"
   }
 }
 ```
 
-this indicates that it depends on service 'a1', 'b' and 'c', and so edges will be drawn on the graph to reflect the returned
+this indicates that it depends on services 'service-b', 'service-b' and 'service-f', and so edges will be drawn on the graph to reflect the returned
 status, in this case, all green for 'Ok'. Note that these services do not need to be declared in the manifest; discovered services will
 be dynamically added to the visualisation (currently always in the 'external' network).
 
-Here is an example screenshot:
+Here is an example screen-shot:
 
 ![Image](example.png)
+
+Here we see that:
+
+ - "service-e" is unreachable by this application, and "service-c" thinks "service-e" is down (we don't yet distinguish why a dependency is
+   unavailable)
+ - "service-d" is reachable by this application, but is not healthy. "service-c" also thinks "service-d" is down, because of its status
+ - "service-c" is reachable by this application, but is not healthy because two of its dependencies are down
+ - "service-a" thinks "service-c" is healthy, but given the current state, this will change on the next check "service-a" makes
 
 # Status
 
@@ -85,7 +93,6 @@ $ npm install
 ```
 
 # Known Issues
- - the example was built up from testing rather than being useful as an example
  - most real services have multiple instances for resiliency. I've spiked out visualisation of this using another layer
    of nesting, but still need to bring into this codebase.
  - early experiments used [D3](http://d3js.org/) which has a model that easily supports dynamic graphs (but didn't have strong
