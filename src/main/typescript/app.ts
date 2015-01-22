@@ -12,3 +12,5 @@ function boot(manifest: Url = "src/test/resources/manifest.json"): Layout.Mutabl
 }
 
 type Url = string
+
+type Thunk = () => void

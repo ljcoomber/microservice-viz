@@ -57,8 +57,8 @@ module Layout {
         redraw(): void;
     }
 
-    export function cose(readyThunk: () => void): MutableLayout {
-        return new Cose.CoseLayout(readyThunk);
+    export function cose(ready: Thunk): MutableLayout {
+        return new Cose.CoseLayout(ready);
     }
 
     module Cose {
@@ -78,7 +78,7 @@ module Layout {
 
             layoutStopped = false;
 
-            constructor(readyThunk:() => void) {
+            constructor(ready:Thunk) {
                 this.cy = cytoscape({
                     container: document.getElementById("cy"),
                     ready: () => {
@@ -86,7 +86,7 @@ module Layout {
                         this.cy.one("layoutstop", () => {
                             this.layoutStopped = true;
                         });
-                        readyThunk();
+                        ready();
                     },
                     style: //noinspection BadExpressionStatementJS
                         STYLE,
