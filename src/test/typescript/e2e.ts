@@ -27,11 +27,11 @@ describe("Microservice Viz End to End test", () => {
            return el.isNode() && _.contains(el.id(), "service-")
         });
 
-        expect(serviceNodes.length).toBe(7)
+        expect(serviceNodes.length).toBe(9)
     });
 
     it("should indicate healthy services", () => {
-        booted.cy.nodes("#service-a,#service-b").forEach( n => {
+        booted.cy.nodes("#service-a-1,#service-a-2,#service-b").forEach(n => {
             expect(n.css().backgroundColor).toBe("green")
             expect(n.css().borderColor).toBe("green")
         })
@@ -57,8 +57,8 @@ describe("Microservice Viz End to End test", () => {
 
     it("should indicate services loaded from other service responses are not checked", () => {
         booted.cy.nodes("#service-f,#service-g").forEach( n => {
-            expect(n.css().backgroundColor).toBe("white")
-            expect(n.css().borderColor).toBe("gray")
+            expect(n.css().backgroundColor).toBe("lightgray")
+            expect(n.css().borderColor).toBe("lightgray")
         })
     });
 

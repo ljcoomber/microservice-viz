@@ -1,27 +1,36 @@
 {
   "services":[
     {
-      "name": "service-a",
-      "url": "http://127.0.0.1:8080/src/test/resources/a",
-      "network": "vlan-1"
+      "id": "service-a",
+      "network": "vlan-1",
+      "instances": [
+        {
+          "id": "service-a-1",
+          "url": "http://127.0.0.1:8080/src/test/resources/a-1"
+        },
+        {
+          "id": "service-a-2",
+          "url": "http://127.0.0.1:8080/src/test/resources/a-2"
+        }
+      ]
     },
     {
-      "name": "service-b",
+      "id": "service-b",
       "url": "http://127.0.0.1:8080/src/test/resources/b",
       "network": "vlan-1"
     },
     {
-      "name": "service-c",
+      "id": "service-c",
       "url": "http://127.0.0.1:8080/src/test/resources/c?error=true",
       "network": "vlan-2"
     },
     {
-      "name": "service-d",
+      "id": "service-d",
       "url": "http://127.0.0.1:8080/src/test/resources/DOES_NOT_EXIST",
       "network": "vlan-2"
     },
     {
-      "name": "service-e",
+      "id": "service-e",
       "url": "http://this.does.not.exist.com/",
       "network": "vlan-2"
     }

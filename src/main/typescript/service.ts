@@ -1,25 +1,32 @@
+///<reference path="../lib/lodash.d.ts" />
 ///<reference path="../lib/jquery.d.ts" />
+///<reference path="model.ts" />
 ///<reference path="layout.ts" />
 
 module Service {
 
-    interface Service {
-        name: string;
-        url: string;
-        network?: string;
+    function unmarshall(obj: any): Service {
+        if(!obj.id) throw `Service must have an ID: ${JSON.stringify(obj)}`;
+
+        if(obj.instances) {
+            return new LogicalService(obj.id, obj.instances, obj.network)
+        }
+        else if(obj.url) {
+            return new ServiceInstance(obj.id, obj.url, null, obj.network);
+        }
+        else {
+            throw `Couldn't parse service: ${JSON.stringify(obj)}`;
+        }
     }
+
 
     function statusFromString(status:string) {
         switch (status) {
-            case "Ok":
-                return Layout.Status.Ok;
-                break;
-            case "NotOk":
-                return Layout.Status.Err;
-                break
+            case "Ok": return Status.Ok;
+            case "NotOk": return Status.Err;
             default:
                 console.error(`Cannot parse status: ${status}`);
-                return Layout.Status.Unknown;
+                return Status.Unknown;
         }
     }
 
@@ -38,19 +45,29 @@ module Service {
             console.log(`Loading services from ${manifest}`)
             jQuery.ajax(manifest, { cache: false })
                 .done((data, textStatus, jqXHR) => {
-                    parseJson(jqXHR.responseText).services.forEach((s: Service) => {
-                        layout.addService(s.name, s.network, false);
-                        this.checkService(s.name, s.url);
-                    });
+                    parseJson(jqXHR.responseText).services.forEach((obj) => {
+                        var service = unmarshall(obj);
+                        layout.addService(service, false);
 
-                    layout.redraw();
+                        if(service instanceof LogicalService) {
+                            _.map(service.instances, (instance) => {
+                                this.checkService(instance.id, instance.url);
+                            });
+                        }
+                        else if(service instanceof ServiceInstance) {
+                            this.checkService(service.id, service.url);
+                        }
+                        else {
+                            throw `Unexpected type back from service ${JSON.stringify(obj)}`;
+                        }
+                    });
                 })
                 .fail((jqXHR, textStatus, errorThrown) => {
                     console.log(`Failed to load service list from ${manifest} due to ${textStatus}`);
                 })
         }
 
-        handleStatusResponse(service, data) {
+        handleStatusResponse(service: ServiceId, data) {
             function parseJson(j): any {
                 try {
                     return jQuery.parseJSON(j)
@@ -62,35 +79,35 @@ module Service {
             if(data) {
                 var dataObj = parseJson(data);
                 if(dataObj) {
-                    Object.keys(dataObj).forEach((dependency) => {
-                        var id = `${service}-${dependency}`;
-
-                        this.layout.addService(dependency);
-                        this.layout.addConnection(id, service, dependency);
+                    Object.keys(dataObj).forEach((dependency: ServiceId) => {
+                        var remote = new RemoteInstance(dependency);
+                        var conn = new Connection({ id: service }, remote);
+                        this.layout.addService(remote);
+                        this.layout.addConnection(conn);
 
                         var status = statusFromString(dataObj[dependency].status);
-                        this.layout.changeConnectionStatus(id, status);
+                        this.layout.changeConnectionStatus(conn.id(), status);
                     });
                 }
             }
         }
 
-        checkService(name:string, url:string) {
+        checkService(service:ServiceId, url:Url) {
             console.log(`Checking service ${name} at ${url}`);
 
-            this.layout.changeServiceStatus(name, Layout.Status.Checking);
+            this.layout.changeServiceStatus(service, Status.Checking);
 
             jQuery.ajax(url, { cache: false })
                 .done((data, textStatus, jqXHR) => {
-                    this.layout.changeServiceStatus(name, Layout.Status.Ok);
-                    this.handleStatusResponse(name, jqXHR.responseText)
+                    this.layout.changeServiceStatus(service, Status.Ok);
+                    this.handleStatusResponse(service, jqXHR.responseText)
                 })
                 .fail((jqXHR, textStatus, errorThrown) => {
                     if(jqXHR.status > 0) {
-                        this.layout.changeServiceStatus(name, Layout.Status.Err);
-                        this.handleStatusResponse(name, jqXHR.responseText)
+                        this.layout.changeServiceStatus(service, Status.Err);
+                        this.handleStatusResponse(service, jqXHR.responseText)
                     } else {
-                        this.layout.changeServiceStatus(name, Layout.Status.CannotConnect);
+                        this.layout.changeServiceStatus(service, Status.CannotConnect);
                     }
                 })
 

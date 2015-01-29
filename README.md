@@ -93,11 +93,11 @@ $ npm install
 ```
 
 # Known Issues
- - most real services have multiple instances for resiliency. I've spiked out visualisation of this using another layer
-   of nesting, but still need to bring into this codebase.
  - early experiments used [D3](http://d3js.org/) which has a model that easily supports dynamic graphs (but didn't have strong
    support for compound graphs). Whilst Cytoscape theoretically allows the graph to be modified, I haven't yet found an
    efficient way of only rendering the necessary parts of it.
+ - position is automatic and therefore imperfect. It's currently possible to manually move nodes around and it would nice
+   to be able to save those with a manifest
 
 # Ideas
  - add more info to nodes, maybe using [QTips](https://github.com/cytoscape/cytoscape.js-qtip)
