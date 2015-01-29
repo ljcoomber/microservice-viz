@@ -17,15 +17,7 @@ enum Status {
 }
 
 class Connection {
-
-    source: Service;
-
-    target: Service;
-
-    constructor(source: Service, target: Service) {
-        this.source = source;
-        this.target = target;
-    }
+    constructor(public source: Service, public target: Service) {}
 
     id(): ConnectionId {
         return `${this.source.id}-${this.target.id}`;
@@ -38,37 +30,13 @@ interface Service {
 }
 
 class ServiceInstance implements Service {
-    id: ServiceId;
-    url: Url;
-    logicalService: Service;
-    network: NetworkId
-
-    constructor(id: ServiceId, url: Url, logicalService: Service = null, network: NetworkId = "external") {
-        this.id = id;
-        this.url = url;
-        this.logicalService = logicalService;
-        this.network = network;
-    }
+    constructor(public id: ServiceId, public url: Url, public logicalService: Service = null, public network: NetworkId = "external") {}
 }
 
 class RemoteInstance implements Service {
-    id: ServiceId;
-    network: NetworkId;
-
-    constructor(id: ServiceId, network: NetworkId = "external") {
-        this.id = id;
-        this.network = network;
-    }
+    constructor(public id: ServiceId, public network: NetworkId = "external") {}
 }
 
 class LogicalService implements Service {
-    id: ServiceId;
-    instances: ServiceInstance[];
-    network: NetworkId;
-
-    constructor(id: ServiceId, instances: ServiceInstance[], network: NetworkId = "external") {
-        this.id = id;
-        this.instances = instances;
-        this.network = network;
-    }
+    constructor(public id: ServiceId, public instances: ServiceInstance[], public network: NetworkId = "external") {}
 }
