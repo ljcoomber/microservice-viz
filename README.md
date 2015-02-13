@@ -98,6 +98,7 @@ $ npm install
    efficient way of only rendering the necessary parts of it.
  - position is automatic and therefore imperfect. It's currently possible to manually move nodes around and it would nice
    to be able to save those with a manifest
+ - Pure browser app unlikely to work well for production due to same origin issues, firewalls, limitations on concurrent connections etc.
 
 # Ideas
  - add more info to nodes, maybe using [QTips](https://github.com/cytoscape/cytoscape.js-qtip)
